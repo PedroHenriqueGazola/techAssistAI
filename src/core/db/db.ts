@@ -9,6 +9,7 @@ class Db {
 				port: 8080,
 			});
 		}
+
 		return Db.client;
 	}
 }

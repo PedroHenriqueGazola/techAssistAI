@@ -4,5 +4,13 @@
 		"source.fixAll.eslint": "always",
 		"source.organizeImports": "always"
 	},
-	"cSpell.words": ["openai", "tseslint", "vectorizer", "weaviate"]
+	"cSpell.words": [
+		"openai",
+		"Pdfs",
+		"sucessfully",
+		"tseslint",
+		"vectorizer",
+		"vectorizers",
+		"weaviate"
+	]
 }

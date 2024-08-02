@@ -1,17 +1,28 @@
-import 'dotenv/config';
-
 import cors from 'cors';
-import express from 'express';
-import { router } from './routes';
+import { Application, json, urlencoded } from 'express';
+import WeaviateController from './core/controllers/weaviateController';
+export class ServerController {
+	private app: Application;
 
-const app = express();
+	constructor(app: Application) {
+		this.app = app;
+	}
 
-app.use(cors());
-app.use(express.json());
-app.use(router);
+	public run(): void {
+		const PORT = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 3000;
+		this.app.listen(PORT, () => {
+			console.log(`Up and running on port ${PORT}`);
+		});
+	}
 
-app.listen(PORT, () => {
-	console.log(`Server started sucessfully at port ${PORT}`);
-});
+	public loadGlobalMiddleware(): void {
+		this.app.use(urlencoded({ extended: false }));
+		this.app.use(json());
+		this.app.use(cors({ credentials: true, origin: true }));
+	}
+
+	public loadControllers(): void {
+		new WeaviateController(this.app).setRoutes();
+	}
+}

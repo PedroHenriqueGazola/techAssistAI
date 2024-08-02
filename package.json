@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"start": "tsx watch src/server.ts",
-		"recreate-db": "tsx src/core/db/recreate-db.ts"
+		"start": "tsx watch src/index.ts",
+		"recreate:db": "tsx src/core/db/recreate-db.ts"
 	},
 	"keywords": [],
 	"author": "Pedro Gazola <ph-gazola@hotmail.com>",
