@@ -1,6 +1,10 @@
 import cors from 'cors';
 import { Application, json, urlencoded } from 'express';
-import WeaviateController from './core/controllers/weaviateController';
+import AccountController from './modules/account/account.controller';
+import AuthController from './modules/auth/auth.controller';
+import EquipmentController from './modules/equipment/equipment.controller';
+import TechAssistController from './modules/techAssist/techAssist.controller';
+import UserController from './modules/user/user.controller';
 export class ServerController {
 	private app: Application;
 
@@ -23,6 +27,10 @@ export class ServerController {
 	}
 
 	public loadControllers(): void {
-		new WeaviateController(this.app).setRoutes();
+		new AccountController(this.app).setRoutes();
+		new AuthController(this.app).setRoutes();
+		new EquipmentController(this.app).setRoutes();
+		new TechAssistController(this.app).setRoutes();
+		new UserController(this.app).setRoutes();
 	}
 }
