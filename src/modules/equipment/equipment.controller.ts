@@ -25,17 +25,65 @@ export default class EquipmentController extends Controller {
 		},
 	] as RouteConfig[];
 
-	public equipmentService: EquipmentService;
-
 	public constructor(app: Application) {
 		super(app);
-
-		this.equipmentService = new EquipmentService();
 	}
 
-	public async search(req: Request, res: Response): Promise<void> {}
+	public async search(req: Request, res: Response): Promise<void> {
+		try {
+			const equipmentService = new EquipmentService();
 
-	public async getOne(req: Request, res: Response): Promise<void> {}
+			const equipments = await equipmentService.search();
 
-	public async createEquipment(req: Request, res: Response): Promise<void> {}
+			res.status(200).json({ equipments });
+		} catch (error) {
+			console.log(error);
+			res.status(500).json({ error });
+		}
+	}
+
+	public async getOne(req: Request, res: Response): Promise<void> {
+		const { id } = req.params;
+
+		if (!id) {
+			res.status(400).json({ error: 'ID is required' });
+
+			return;
+		}
+
+		try {
+			const equipmentService = new EquipmentService();
+
+			const equipment = await equipmentService.getOne(id);
+
+			res.status(200).json({ equipment });
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	}
+
+	public async createEquipment(req: Request, res: Response): Promise<void> {
+		try {
+			const equipmentService = new EquipmentService();
+
+			const { valid, error } = equipmentService.validateCreateEquipment(req);
+
+			if (!valid) {
+				res.status(400).json({ error });
+				return;
+			}
+
+			const { name, serialNumber, description } = req.body;
+
+			const equipment = await equipmentService.createEquipment(
+				name,
+				serialNumber,
+				description,
+			);
+
+			res.status(200).json({ equipment });
+		} catch (error) {
+			res.status(500).json({ error });
+		}
+	}
 }
