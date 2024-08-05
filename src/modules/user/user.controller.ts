@@ -1,5 +1,8 @@
 import { Application, Request, Response } from 'express';
-import Controller, { Methods, RouteConfig } from '../../controller/controller';
+import Controller, {
+	Methods,
+	RouteConfig,
+} from '../../core/controller/controller';
 import { UserService } from './user.service';
 
 export default class UserController extends Controller {

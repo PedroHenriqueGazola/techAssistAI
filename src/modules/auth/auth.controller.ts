@@ -1,5 +1,8 @@
 import { Application, Request, Response } from 'express';
-import Controller, { Methods, RouteConfig } from '../../controller/controller';
+import Controller, {
+	Methods,
+	RouteConfig,
+} from '../../core/controller/controller';
 import { AuthService } from './auth.service';
 
 export default class AuthController extends Controller {

@@ -1,4 +1,5 @@
 import { Application, NextFunction, Request, Response } from 'express';
+import { AuthMiddleware } from '../middleware/auth.middleware';
 
 export enum Methods {
 	GET = 'GET',
@@ -28,9 +29,13 @@ export default abstract class Controller {
 
 	constructor(protected app: Application) {}
 
-	public setRoutes(): void {
+	public setRoutes(skipAuthMiddleware?: boolean): void {
 		for (const route of this.routes) {
 			const fullPath = this.path + route.path;
+
+			if (!skipAuthMiddleware) {
+				this.app.use(fullPath, AuthMiddleware);
+			}
 
 			for (const middleware of route.localMiddleware) {
 				this.app.use(fullPath, middleware);

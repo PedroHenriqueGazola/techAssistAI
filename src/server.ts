@@ -29,7 +29,7 @@ export class ServerController {
 
 	public loadControllers(): void {
 		new AccountController(this.app).setRoutes();
-		new AuthController(this.app).setRoutes();
+		new AuthController(this.app).setRoutes(true);
 		new DocumentController(this.app).setRoutes();
 		new EquipmentController(this.app).setRoutes();
 		new TechAssistController(this.app).setRoutes();

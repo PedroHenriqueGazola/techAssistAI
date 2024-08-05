@@ -1,5 +1,8 @@
 import { Application, Request, Response } from 'express';
-import Controller, { Methods, RouteConfig } from '../../controller/controller';
+import Controller, {
+	Methods,
+	RouteConfig,
+} from '../../core/controller/controller';
 import { TechAssistService } from './techAssist.service';
 
 export default class TechAssistController extends Controller {
