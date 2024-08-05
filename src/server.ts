@@ -2,6 +2,7 @@ import cors from 'cors';
 import { Application, json, urlencoded } from 'express';
 import AccountController from './modules/account/account.controller';
 import AuthController from './modules/auth/auth.controller';
+import DocumentController from './modules/document/document.controller';
 import EquipmentController from './modules/equipment/equipment.controller';
 import TechAssistController from './modules/techAssist/techAssist.controller';
 import UserController from './modules/user/user.controller';
@@ -29,6 +30,7 @@ export class ServerController {
 	public loadControllers(): void {
 		new AccountController(this.app).setRoutes();
 		new AuthController(this.app).setRoutes();
+		new DocumentController(this.app).setRoutes();
 		new EquipmentController(this.app).setRoutes();
 		new TechAssistController(this.app).setRoutes();
 		new UserController(this.app).setRoutes();
