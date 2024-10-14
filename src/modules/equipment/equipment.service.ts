@@ -1,5 +1,5 @@
-import { Request } from 'express';
 import Db from '../../core/db/db';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { Equipment, ValidateCreateEquipmentResponse } from './equipment.type';
 
 export class EquipmentService {
@@ -47,7 +47,7 @@ export class EquipmentService {
 	}
 
 	public validateCreateEquipment(
-		req: Request,
+		req: AuthenticatedRequest,
 	): ValidateCreateEquipmentResponse {
 		if (!req.body) {
 			return { valid: false, error: 'Missing request body' };

@@ -1,8 +1,9 @@
-import { Application, Request, Response } from 'express';
+import { Application, Response } from 'express';
 import Controller, {
 	Methods,
 	RouteConfig,
 } from '../../core/controller/controller';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { UserService } from './user.service';
 
 export default class UserController extends Controller {
@@ -26,7 +27,7 @@ export default class UserController extends Controller {
 		super(app);
 	}
 
-	public async search(req: Request, res: Response): Promise<void> {
+	public async search(req: AuthenticatedRequest, res: Response): Promise<void> {
 		try {
 			const userService = new UserService();
 
@@ -39,7 +40,7 @@ export default class UserController extends Controller {
 		}
 	}
 
-	public async getOne(req: Request, res: Response): Promise<void> {
+	public async getOne(req: AuthenticatedRequest, res: Response): Promise<void> {
 		const { id } = req.params;
 
 		if (!id) {

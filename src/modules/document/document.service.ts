@@ -49,4 +49,58 @@ export class DocumentService {
 			throw new Error('Error getting document');
 		}
 	}
+
+	public async upload(data: {
+		title: string;
+		content: string;
+		equipmentId: string;
+		accountId: string;
+	}): Promise<Document> {
+		try {
+			const db = await Db.getClient();
+
+			const documentCollection = db.collections.get('Document');
+
+			const sections = data.content
+				.split('\n\n')
+				.map((section) => section.trim())
+				.filter((section) => section.length > 0);
+
+			const documentId = await documentCollection.data.insert({
+				properties: {
+					title: data.title,
+				},
+				references: {
+					equipmentId: data.equipmentId,
+					accountId: data.accountId,
+				},
+			});
+
+			const promises = sections.map(async (section, index) => {
+				const uuid = await documentCollection.data.insert({
+					properties: {
+						title: `${data.title} - Section ${index + 1}`,
+						content: section,
+					},
+					references: {
+						equipmentId: data.equipmentId,
+						accountId: data.accountId,
+					},
+				});
+				return uuid;
+			});
+
+			const uuids = await Promise.all(promises);
+
+			return {
+				id: uuids[0],
+				title: data.title,
+				content: sections.join(' '),
+				equipmentId: data.equipmentId,
+				accountId: data.accountId,
+			} as Document;
+		} catch (error) {
+			throw new Error('Error uploading document');
+		}
+	}
 }

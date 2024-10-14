@@ -1,8 +1,9 @@
-import { Application, Request, Response } from 'express';
+import { Application, Response } from 'express';
 import Controller, {
 	Methods,
 	RouteConfig,
 } from '../../core/controller/controller';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { EquipmentService } from './equipment.service';
 
 export default class EquipmentController extends Controller {
@@ -32,7 +33,7 @@ export default class EquipmentController extends Controller {
 		super(app);
 	}
 
-	public async search(req: Request, res: Response): Promise<void> {
+	public async search(req: AuthenticatedRequest, res: Response): Promise<void> {
 		try {
 			const equipmentService = new EquipmentService();
 
@@ -45,7 +46,7 @@ export default class EquipmentController extends Controller {
 		}
 	}
 
-	public async getOne(req: Request, res: Response): Promise<void> {
+	public async getOne(req: AuthenticatedRequest, res: Response): Promise<void> {
 		const { id } = req.params;
 
 		if (!id) {
@@ -65,7 +66,10 @@ export default class EquipmentController extends Controller {
 		}
 	}
 
-	public async createEquipment(req: Request, res: Response): Promise<void> {
+	public async createEquipment(
+		req: AuthenticatedRequest,
+		res: Response,
+	): Promise<void> {
 		try {
 			const equipmentService = new EquipmentService();
 

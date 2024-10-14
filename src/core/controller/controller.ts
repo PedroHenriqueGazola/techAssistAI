@@ -1,5 +1,6 @@
-import { Application, NextFunction, Request, Response } from 'express';
+import { Application, NextFunction, Response } from 'express';
 import { AuthMiddleware } from '../middleware/auth.middleware';
+import { AuthenticatedRequest } from '../middleware/auth.type';
 
 export enum Methods {
 	GET = 'GET',
@@ -12,12 +13,12 @@ export interface RouteConfig {
 	path: string;
 	method: Methods;
 	handler: (
-		req: Request,
+		req: AuthenticatedRequest,
 		res: Response,
 		next: NextFunction,
 	) => void | Promise<void>;
 	localMiddleware: ((
-		req: Request,
+		req: AuthenticatedRequest,
 		res: Response,
 		next: NextFunction,
 	) => void)[];

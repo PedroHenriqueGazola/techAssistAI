@@ -1,8 +1,9 @@
-import { Application, Request, Response } from 'express';
+import { Application, Response } from 'express';
 import Controller, {
 	Methods,
 	RouteConfig,
 } from '../../core/controller/controller';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { TechAssistService } from './techAssist.service';
 
 export default class TechAssistController extends Controller {
@@ -20,7 +21,10 @@ export default class TechAssistController extends Controller {
 		super(app);
 	}
 
-	public async diagnoseIssue(req: Request, res: Response): Promise<void> {
+	public async diagnoseIssue(
+		req: AuthenticatedRequest,
+		res: Response,
+	): Promise<void> {
 		const { description, equipmentId } = req.body;
 
 		if (!description || !equipmentId) {

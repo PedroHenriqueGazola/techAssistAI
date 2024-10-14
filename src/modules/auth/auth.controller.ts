@@ -1,8 +1,9 @@
-import { Application, Request, Response } from 'express';
+import { Application, Response } from 'express';
 import Controller, {
 	Methods,
 	RouteConfig,
 } from '../../core/controller/controller';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { AuthService } from './auth.service';
 
 export default class AuthController extends Controller {
@@ -20,7 +21,7 @@ export default class AuthController extends Controller {
 		super(app);
 	}
 
-	public async signIn(req: Request, res: Response): Promise<void> {
+	public async signIn(req: AuthenticatedRequest, res: Response): Promise<void> {
 		const authService = new AuthService();
 
 		const { valid, error } = authService.validateSignInRequest(req);

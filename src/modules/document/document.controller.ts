@@ -1,8 +1,9 @@
-import { Application, Request, Response } from 'express';
+import { Application, Response } from 'express';
 import Controller, {
 	Methods,
 	RouteConfig,
 } from '../../core/controller/controller';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { DocumentService } from './document.service';
 
 export default class DocumentController extends Controller {
@@ -20,13 +21,19 @@ export default class DocumentController extends Controller {
 			handler: this.getOne,
 			localMiddleware: [],
 		},
+		{
+			path: '',
+			method: Methods.POST,
+			handler: this.upload,
+			localMiddleware: [],
+		},
 	] as RouteConfig[];
 
 	public constructor(app: Application) {
 		super(app);
 	}
 
-	public async search(req: Request, res: Response): Promise<void> {
+	public async search(req: AuthenticatedRequest, res: Response): Promise<void> {
 		try {
 			const documentService = new DocumentService();
 
@@ -39,7 +46,7 @@ export default class DocumentController extends Controller {
 		}
 	}
 
-	public async getOne(req: Request, res: Response): Promise<void> {
+	public async getOne(req: AuthenticatedRequest, res: Response): Promise<void> {
 		const { id } = req.params;
 
 		if (!id) {
@@ -55,6 +62,32 @@ export default class DocumentController extends Controller {
 
 			res.status(200).json({ document });
 		} catch (error) {
+			res.status(500).json({ error });
+		}
+	}
+
+	public async upload(req: AuthenticatedRequest, res: Response): Promise<void> {
+		const { title, content, equipmentId, accountId } = req.body;
+
+		if (!title || !content || !equipmentId || !accountId) {
+			res.status(400).json({ error: 'All fields are required' });
+
+			return;
+		}
+
+		try {
+			const documentService = new DocumentService();
+
+			const document = await documentService.upload({
+				title,
+				content,
+				equipmentId,
+				accountId,
+			});
+
+			res.status(201).json({ document });
+		} catch (error) {
+			console.log(error);
 			res.status(500).json({ error });
 		}
 	}

@@ -15,7 +15,7 @@ async function recreateDb() {
 	const accountIds = await createAccounts(db);
 	await createUsers(db, accountIds);
 	const equipmentIds = await createEquipments(db, accountIds);
-	await createObjects(db, accountIds, equipmentIds);
+	await createDocuments(db, accountIds, equipmentIds);
 
 	console.log('Database recreated');
 }
@@ -136,7 +136,7 @@ async function createEquipments(
 	return uuid.uuids as string[];
 }
 
-async function createObjects(
+async function createDocuments(
 	db: WeaviateClient,
 	accountIds: string[],
 	equipmentIds: string[],
@@ -145,19 +145,24 @@ async function createObjects(
 
 	const allPdfsParsed = await parseAllPdfs();
 
-	const uuid = await Document.data.insertMany(
-		allPdfsParsed.map((pdf) => ({
-			properties: {
-				...pdf,
-			},
-			references: {
-				accountId: accountIds[0],
-				equipmentId: equipmentIds[0],
-			},
-		})),
-	);
+	for (const pdf of allPdfsParsed) {
+		const sections = splitIntoSections(pdf.content);
 
-	console.log('Inserted documents with UUIDs:', uuid);
+		for (const section of sections) {
+			await Document.data.insert({
+				properties: {
+					title: pdf.title,
+					content: section,
+				},
+				references: {
+					accountId: accountIds[0],
+					equipmentId: equipmentIds[0],
+				},
+			});
+		}
+	}
+
+	console.log('Inserted documents with sections');
 }
 
 async function parseAllPdfs(): Promise<{ title: string; content: string }[]> {
@@ -182,6 +187,13 @@ async function parseAllPdfs(): Promise<{ title: string; content: string }[]> {
 	}
 
 	return allPdfsParsed;
+}
+
+function splitIntoSections(content: string): string[] {
+	return content
+		.split('\n\n')
+		.map((section) => section.trim())
+		.filter((section) => section.length);
 }
 
 (async () => {

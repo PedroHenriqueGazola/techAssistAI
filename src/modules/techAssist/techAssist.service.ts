@@ -1,7 +1,6 @@
 import Db from '../../core/db/db';
 import { OpenAISingleton } from '../../core/open-ai/openai';
 import { DiagnoseIssueParams } from './techAssist.type';
-
 export class TechAssistService {
 	public async diagnoseIssue(
 		params: DiagnoseIssueParams,
@@ -13,7 +12,10 @@ export class TechAssistService {
 
 			const documentCollection = db.collections.get('Document');
 
-			const { objects } = await documentCollection.query.fetchObjects({
+			const { objects } = await documentCollection.query.hybrid(description, {
+				alpha: 0.5,
+				limit: 50,
+				returnMetadata: ['score', 'distance', 'explainScore'],
 				filters: documentCollection.filter
 					.byRef('equipmentId')
 					.byId()
@@ -24,7 +26,18 @@ export class TechAssistService {
 				throw new Error('Document not found for the given equipment ID');
 			}
 
-			const manualContent = objects[0].properties.content;
+			const manualContent = [];
+
+			for (const object of objects) {
+				const score = object.metadata?.['score'] || 0;
+				if (score < 0.2) {
+					continue;
+				}
+
+				manualContent.push(object.properties.content);
+			}
+
+			const text = manualContent.join('\n\n');
 
 			const prompt = `
 				Você é um assistente técnico que ajuda a diagnosticar problemas de equipamentos com base em descrições fornecidas pelos técnicos.
@@ -32,7 +45,7 @@ export class TechAssistService {
 				${description}
 
 				Abaixo está o trecho relevante do manual:
-				${manualContent}
+				${text}
 
 				Com base nas informações acima, forneça uma solução detalhada para o problema.
 			`;

@@ -1,12 +1,14 @@
 import bcrypt from 'bcrypt';
-import { Request } from 'express';
 import Db from '../../core/db/db';
+import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { signToken } from '../../core/utils/jwt';
 import { User } from '../user/user.type';
 import { SignInParams, ValidateSignInResponse } from './auth.type';
 
 export class AuthService {
-	public validateSignInRequest(req: Request): ValidateSignInResponse {
+	public validateSignInRequest(
+		req: AuthenticatedRequest,
+	): ValidateSignInResponse {
 		if (!req.body) {
 			return { valid: false, error: 'Missing request body' };
 		}
@@ -34,8 +36,6 @@ export class AuthService {
 				limit: 1,
 				filters: userCollection.filter.byProperty('email').equal(params.email),
 			});
-
-			console.log(objects);
 
 			if (!objects.length) {
 				throw new Error('User not found');
