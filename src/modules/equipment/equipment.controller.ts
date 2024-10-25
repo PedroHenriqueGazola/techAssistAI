@@ -1,8 +1,5 @@
 import { Application, Response } from 'express';
-import Controller, {
-	Methods,
-	RouteConfig,
-} from '../../core/controller/controller';
+import Controller, { Methods, RouteConfig } from '../../core/controller/controller';
 import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { EquipmentService } from './equipment.service';
 
@@ -34,10 +31,12 @@ export default class EquipmentController extends Controller {
 	}
 
 	public async search(req: AuthenticatedRequest, res: Response): Promise<void> {
+		const { accountId } = req.authenticatedUser!;
+
 		try {
 			const equipmentService = new EquipmentService();
 
-			const equipments = await equipmentService.search();
+			const equipments = await equipmentService.search(accountId);
 
 			res.status(200).json({ equipments });
 		} catch (error) {
@@ -66,10 +65,9 @@ export default class EquipmentController extends Controller {
 		}
 	}
 
-	public async createEquipment(
-		req: AuthenticatedRequest,
-		res: Response,
-	): Promise<void> {
+	public async createEquipment(req: AuthenticatedRequest, res: Response): Promise<void> {
+		const { accountId } = req.authenticatedUser!;
+
 		try {
 			const equipmentService = new EquipmentService();
 
@@ -82,11 +80,7 @@ export default class EquipmentController extends Controller {
 
 			const { name, serialNumber, description } = req.body;
 
-			const equipment = await equipmentService.createEquipment(
-				name,
-				serialNumber,
-				description,
-			);
+			const equipment = await equipmentService.createEquipment(name, serialNumber, description, accountId);
 
 			res.status(200).json({ equipment });
 		} catch (error) {

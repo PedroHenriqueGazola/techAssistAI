@@ -1,6 +1,6 @@
 export interface AuthenticatedUser {
 	accountId: string;
-	userId: string;
+	id: string;
 	name: string;
 	email: string;
 }

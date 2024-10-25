@@ -35,6 +35,7 @@ export class AuthService {
 			const { objects } = await userCollection.query.fetchObjects({
 				limit: 1,
 				filters: userCollection.filter.byProperty('email').equal(params.email),
+				returnReferences: [{ linkOn: 'accountId' }],
 			});
 
 			if (!objects.length) {
@@ -46,7 +47,8 @@ export class AuthService {
 			const user = {
 				id: uuid,
 				...properties,
-				accountId: references?.[0].objects?.[0].uuid,
+				accountId: (references?.accountId as { uuids: string[] } | undefined)
+					?.uuids[0],
 			} as User;
 
 			const isPasswordValid = await bcrypt.compare(

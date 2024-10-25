@@ -1,8 +1,5 @@
 import { Application, Response } from 'express';
-import Controller, {
-	Methods,
-	RouteConfig,
-} from '../../core/controller/controller';
+import Controller, { Methods, RouteConfig } from '../../core/controller/controller';
 import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { DocumentService } from './document.service';
 
@@ -34,10 +31,12 @@ export default class DocumentController extends Controller {
 	}
 
 	public async search(req: AuthenticatedRequest, res: Response): Promise<void> {
+		const { accountId } = req.authenticatedUser!;
+
 		try {
 			const documentService = new DocumentService();
 
-			const documents = await documentService.search();
+			const documents = await documentService.search(accountId);
 
 			res.status(200).json({ documents });
 		} catch (error) {
@@ -67,7 +66,8 @@ export default class DocumentController extends Controller {
 	}
 
 	public async upload(req: AuthenticatedRequest, res: Response): Promise<void> {
-		const { title, content, equipmentId, accountId } = req.body;
+		const { title, content, equipmentId } = req.body;
+		const { accountId } = req.authenticatedUser!;
 
 		if (!title || !content || !equipmentId || !accountId) {
 			res.status(400).json({ error: 'All fields are required' });

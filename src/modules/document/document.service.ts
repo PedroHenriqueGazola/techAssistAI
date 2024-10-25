@@ -1,14 +1,17 @@
 import Db from '../../core/db/db';
+import { filterByAccount } from '../../core/utils/filter-by-account';
 import { Document } from './document.type';
 
 export class DocumentService {
-	public async search(): Promise<Document[]> {
+	public async search(accountId: string): Promise<Document[]> {
 		try {
 			const db = await Db.getClient();
 
 			const documentCollection = db.collections.get('Document');
 
-			const { objects } = await documentCollection.query.fetchObjects();
+			const { objects } = await documentCollection.query.fetchObjects({
+				filters: filterByAccount(documentCollection, accountId),
+			});
 
 			return objects.map((document) => {
 				const { uuid, properties } = document;
@@ -19,6 +22,7 @@ export class DocumentService {
 				} as Document;
 			});
 		} catch (error) {
+			console.log(error);
 			throw new Error('Error getting documents');
 		}
 	}
@@ -35,7 +39,7 @@ export class DocumentService {
 			});
 
 			if (!objects?.length) {
-				throw new Error('Document not found');
+				return {} as Document;
 			}
 
 			const { uuid, properties } = objects?.[0];

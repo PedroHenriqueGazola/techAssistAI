@@ -1,15 +1,18 @@
 import Db from '../../core/db/db';
 import { AuthenticatedRequest } from '../../core/middleware/auth.type';
+import { filterByAccount } from '../../core/utils/filter-by-account';
 import { Equipment, ValidateCreateEquipmentResponse } from './equipment.type';
 
 export class EquipmentService {
-	public async search(): Promise<Equipment[]> {
+	public async search(accountId: string): Promise<Equipment[]> {
 		try {
 			const db = await Db.getClient();
 
 			const equipmentCollection = db.collections.get('Equipment');
 
-			const { objects } = await equipmentCollection.query.fetchObjects();
+			const { objects } = await equipmentCollection.query.fetchObjects({
+				filters: filterByAccount(equipmentCollection, accountId),
+			});
 
 			return objects.map((equipment) => {
 				const { uuid, properties } = equipment;
@@ -46,9 +49,7 @@ export class EquipmentService {
 		}
 	}
 
-	public validateCreateEquipment(
-		req: AuthenticatedRequest,
-	): ValidateCreateEquipmentResponse {
+	public validateCreateEquipment(req: AuthenticatedRequest): ValidateCreateEquipmentResponse {
 		if (!req.body) {
 			return { valid: false, error: 'Missing request body' };
 		}
@@ -69,6 +70,7 @@ export class EquipmentService {
 	public async createEquipment(
 		name: string,
 		serialNumber: string,
+		accountId: string,
 		description?: string,
 	): Promise<Equipment> {
 		try {
@@ -81,6 +83,9 @@ export class EquipmentService {
 					name,
 					serialNumber,
 					description: description || '',
+				},
+				references: {
+					account: accountId,
 				},
 			});
 

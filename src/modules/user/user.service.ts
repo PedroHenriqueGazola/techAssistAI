@@ -1,14 +1,17 @@
 import Db from '../../core/db/db';
+import { filterByAccount } from '../../core/utils/filter-by-account';
 import { User } from './user.type';
 
 export class UserService {
-	public async search(): Promise<User[]> {
+	public async search(accountId: string): Promise<User[]> {
 		try {
 			const db = await Db.getClient();
 
 			const userCollection = db.collections.get('User');
 
-			const { objects } = await userCollection.query.fetchObjects();
+			const { objects } = await userCollection.query.fetchObjects({
+				filters: filterByAccount(userCollection, accountId),
+			});
 
 			return objects.map((user) => {
 				const { uuid, properties } = user;

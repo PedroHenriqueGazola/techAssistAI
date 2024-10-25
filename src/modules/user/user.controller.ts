@@ -1,8 +1,5 @@
 import { Application, Response } from 'express';
-import Controller, {
-	Methods,
-	RouteConfig,
-} from '../../core/controller/controller';
+import Controller, { Methods, RouteConfig } from '../../core/controller/controller';
 import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { UserService } from './user.service';
 
@@ -28,10 +25,12 @@ export default class UserController extends Controller {
 	}
 
 	public async search(req: AuthenticatedRequest, res: Response): Promise<void> {
+		const { accountId } = req.authenticatedUser!;
+
 		try {
 			const userService = new UserService();
 
-			const users = await userService.search();
+			const users = await userService.search(accountId);
 
 			res.status(200).json({ users });
 		} catch (error) {

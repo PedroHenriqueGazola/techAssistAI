@@ -1,6 +1,7 @@
 import Db from '../../core/db/db';
 import { OpenAISingleton } from '../../core/open-ai/openai';
 import { DiagnoseIssueParams } from './techAssist.type';
+
 export class TechAssistService {
 	public async diagnoseIssue(
 		params: DiagnoseIssueParams,
@@ -14,7 +15,7 @@ export class TechAssistService {
 
 			const { objects } = await documentCollection.query.hybrid(description, {
 				alpha: 0.5,
-				limit: 50,
+				limit: 5,
 				returnMetadata: ['score', 'distance', 'explainScore'],
 				filters: documentCollection.filter
 					.byRef('equipmentId')
