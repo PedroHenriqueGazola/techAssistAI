@@ -1,8 +1,5 @@
 import { Application, Response } from 'express';
-import Controller, {
-	Methods,
-	RouteConfig,
-} from '../../core/controller/controller';
+import Controller, { Methods, RouteConfig } from '../../core/controller/controller';
 import { AuthenticatedRequest } from '../../core/middleware/auth.type';
 import { AuthService } from './auth.service';
 
@@ -34,12 +31,12 @@ export default class AuthController extends Controller {
 		const { email, password } = req.body;
 
 		try {
-			const token = await authService.signIn({
+			const authenticatedUser = await authService.signIn({
 				email,
 				password,
 			});
 
-			res.status(200).json({ token });
+			res.status(200).json(authenticatedUser);
 		} catch (error) {
 			console.log(error);
 			res.status(500).json({ error });

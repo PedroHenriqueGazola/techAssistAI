@@ -1,0 +1,29 @@
+<ion-header class="tech-header">
+  <ion-toolbar color="primary">
+    <ion-title slot="start">Equipamentos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="tech-content ion-padding">
+  @if(isLoading()) {
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  } @else {
+  <ion-list class="tech-list">
+    @for (equipment of equipments(); track $index) {
+    <app-card-equipment
+      [routerLink]="['/equipment', equipment.id]"
+      [equipment]="equipment"
+    />
+    }
+  </ion-list>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button routerLink="/equipment">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  }
+</ion-content>

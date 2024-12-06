@@ -1,0 +1,26 @@
+ion-content {
+  ion-skeleton-text {
+    margin-bottom: 16px;
+    border-radius: 15px;
+    height: 150px;
+  }
+}
+
+.equipment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+  }
+}
+
+ion-button {
+  height: 48px;
+}

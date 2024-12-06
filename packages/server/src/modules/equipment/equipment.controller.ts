@@ -80,7 +80,7 @@ export default class EquipmentController extends Controller {
 
 			const { name, serialNumber, description } = req.body;
 
-			const equipment = await equipmentService.createEquipment(name, serialNumber, description, accountId);
+			const equipment = await equipmentService.createEquipment(name, serialNumber, accountId, description);
 
 			res.status(200).json({ equipment });
 		} catch (error) {

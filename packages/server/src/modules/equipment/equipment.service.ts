@@ -85,7 +85,7 @@ export class EquipmentService {
 					description: description || '',
 				},
 				references: {
-					account: accountId,
+					accountId,
 				},
 			});
 

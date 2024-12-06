@@ -1,0 +1,37 @@
+<ion-content [fullscreen]="true" class="sign-in">
+  <div class="sign-in__container">
+    <div class="sign-in__logo">
+      <ion-img src="assets/logo.png"></ion-img>
+    </div>
+
+    <form [formGroup]="signForm" class="sign-in__form">
+      <div class="sign-in__form__fields">
+        <ion-input
+          label="E-mail"
+          label-placement="floating"
+          fill="outline"
+          placeholder="Digite seu e-mail"
+          type="email"
+          formControlName="email"
+        ></ion-input>
+
+        <ion-input
+          label="Senha"
+          label-placement="floating"
+          fill="outline"
+          placeholder="Digite sua senha"
+          type="password"
+          formControlName="password"
+        ></ion-input>
+      </div>
+
+      <ion-button
+        expand="block"
+        (click)="login()"
+        [disabled]="signForm.invalid || signForm.pristine || isLoading()"
+      >
+        Entrar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

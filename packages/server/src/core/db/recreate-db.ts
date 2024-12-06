@@ -86,10 +86,7 @@ async function createAccounts(db: WeaviateClient): Promise<string[]> {
 	return uuid.uuids as string[];
 }
 
-async function createUsers(
-	db: WeaviateClient,
-	accountIds: string[],
-): Promise<void> {
+async function createUsers(db: WeaviateClient, accountIds: string[]): Promise<void> {
 	const User = db.collections.get('User');
 
 	const uuid = await User.data.insertMany([
@@ -98,8 +95,7 @@ async function createUsers(
 			properties: {
 				name: 'Kelly Pilati',
 				email: 'kelly-pilati@tuamaeaquelaursa.com',
-				password:
-					'$2b$10$wjJIoKQfGEPFZdDnML/ohetSl.v7ffivlBKySqI2E/fLoPNBDajLq',
+				password: '$2b$10$wjJIoKQfGEPFZdDnML/ohetSl.v7ffivlBKySqI2E/fLoPNBDajLq',
 				avatarUrl: 'https://via.placeholder.com/150',
 			},
 			references: {
@@ -111,10 +107,7 @@ async function createUsers(
 	console.log('Inserted users with UUIDs:', uuid);
 }
 
-async function createEquipments(
-	db: WeaviateClient,
-	accountIds: string[],
-): Promise<string[]> {
+async function createEquipments(db: WeaviateClient, accountIds: string[]): Promise<string[]> {
 	const Equipment = db.collections.get('Equipment');
 
 	const uuid = await Equipment.data.insertMany([
@@ -136,11 +129,7 @@ async function createEquipments(
 	return uuid.uuids as string[];
 }
 
-async function createDocuments(
-	db: WeaviateClient,
-	accountIds: string[],
-	equipmentIds: string[],
-): Promise<void> {
+async function createDocuments(db: WeaviateClient, accountIds: string[], equipmentIds: string[]): Promise<void> {
 	const Document = db.collections.get('Document');
 
 	const allPdfsParsed = await parseAllPdfs();

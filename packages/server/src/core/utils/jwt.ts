@@ -8,7 +8,12 @@ export const signToken = (payload: any): string => {
 		throw new Error('JWT_SECRET is not defined');
 	}
 
-	return sign(payload, secret, { expiresIn: '1d' });
+	const token = sign(payload, secret, { expiresIn: '1d' });
+
+	return {
+		...payload,
+		token,
+	};
 };
 
 export const verifyToken = (token: string): JwtPayload | string => {

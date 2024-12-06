@@ -1,0 +1,7 @@
+{
+  "name": "tech-assist-ai",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

@@ -1,0 +1,40 @@
+.tech-content {
+  --background: #f3f4f7;
+}
+
+.tech-list {
+  padding: 0px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tech-avatar {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 99999px;
+  background: #0054e91a;
+  color: #0054e9;
+}
+
+.tech-header {
+  ion-toolbar {
+    --border-style: none;
+    --min-height: 64px;
+  }
+}
+
+.tech-footer {
+  padding: 16px;
+  background: #f3f4f7;
+
+  ion-toolbar {
+    --background: transparent;
+  }
+}

@@ -1,17 +1,17 @@
 {
-	"editor.formatOnSave": true,
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": "always",
-		"source.organizeImports": "always"
-	},
-	"cSpell.words": [
-		"openai",
-		"Pdfs",
-		"sucessfully",
-		"tseslint",
-		"uuids",
-		"vectorizer",
-		"vectorizers",
-		"weaviate"
-	]
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "always"
+  },
+  "cSpell.words": [
+    "openai",
+    "Pdfs",
+    "sucessfully",
+    "tseslint",
+    "uuids",
+    "vectorizer",
+    "vectorizers",
+    "weaviate"
+  ]
 }

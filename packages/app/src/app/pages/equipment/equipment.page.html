@@ -1,0 +1,76 @@
+<ion-header class="fc-header">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button data-cy="back" type="icon" appDebounceClick (click)="close()">
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title slot="start">Equipamento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding tech-content">
+  @if(isLoading()) {
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  } @else {
+  <form [formGroup]="equipmentForm" class="equipment-form">
+    <div class="equipment-form__content">
+      <ion-input
+        label="Nome"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Digite o nome do equipamento"
+        formControlName="name"
+      ></ion-input>
+
+      <ion-input
+        label="Número de série"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Digite o número de série do equipamento"
+        formControlName="serialNumber"
+      ></ion-input>
+
+      <ion-input
+        label="Descrição"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Digite a descrição do equipamento"
+        formControlName="description"
+      ></ion-input>
+    </div>
+
+    @if(equipment()?.id) {
+    <div class="equipment-form__content">
+      <ion-button expand="block" (click)="openDiagnoseModal()">
+        <ion-icon name="medkit-outline" slot="start"></ion-icon>
+        Gerar Diagnóstico
+      </ion-button>
+    </div>
+    }
+  </form>
+  }
+</ion-content>
+
+@if(!equipment()?.id) {
+<ion-footer class="tech-footer">
+  <ion-toolbar>
+    <ion-button
+      expand="block"
+      [disabled]="(
+          equipmentForm.invalid ||
+          equipmentForm.pristine ||
+          isLoading()
+        )"
+      (click)="createEquipment()"
+    >
+      Criar
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+}
