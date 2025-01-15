@@ -3,9 +3,7 @@ import { OpenAISingleton } from '../../core/open-ai/openai';
 import { DiagnoseIssueParams } from './techAssist.type';
 
 export class TechAssistService {
-	public async diagnoseIssue(
-		params: DiagnoseIssueParams,
-	): Promise<string | undefined | null> {
+	public async diagnoseIssue(params: DiagnoseIssueParams): Promise<string | undefined | null> {
 		const { description, equipmentId } = params;
 
 		try {
@@ -17,10 +15,7 @@ export class TechAssistService {
 				alpha: 0.5,
 				limit: 5,
 				returnMetadata: ['score', 'distance', 'explainScore'],
-				filters: documentCollection.filter
-					.byRef('equipmentId')
-					.byId()
-					.equal(equipmentId),
+				filters: documentCollection.filter.byRef('equipmentId').byId().equal(equipmentId),
 			});
 
 			if (!objects.length) {

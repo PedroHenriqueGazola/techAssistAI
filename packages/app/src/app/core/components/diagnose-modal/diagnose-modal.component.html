@@ -1,0 +1,22 @@
+<div class="diagnose-modal">
+  <ion-input
+    label="Diagnóstico"
+    label-placement="floating"
+    fill="outline"
+    placeholder="Descreva o problema apresentado"
+    [formControl]="diagnoseControl"
+  ></ion-input>
+
+  <ion-button
+    expand="block"
+    color="primary"
+    (click)="onDiagnose()"
+    [disabled]="diagnoseControl.invalid"
+  >
+    Gerar Diagnóstico
+  </ion-button>
+
+  @if(diagnose()) {
+  <div [innerHTML]="diagnose()"></div>
+  }
+</div>
